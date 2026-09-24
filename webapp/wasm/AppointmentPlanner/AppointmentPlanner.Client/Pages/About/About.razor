@@ -3,91 +3,47 @@
 @if (isDataLoaded)
 {
 <div id="@aboutId" class="about-container">
-    <header>
+    <header class="about-header">
         <div class="module-title">
-            <div class='title'>ABOUT</div>
+            <h1 class='title'>About Appointment Planner</h1>
             <div class='underline'></div>
         </div>
+        <span class="showcase-count">@showcaseComponents.Count components</span>
     </header>
-    <p>
-        This Example Clinic demo application showcases several Syncfusion Blazor UI components together in a real-world application scenario. 
-        You can explore the <a href="https://github.com/syncfusion/blazor-showcase-appointment-planner" target="_blank">source code</a> of this application and use it as a
-        reference for integrating Syncfusion Blazor UI components in your applications.
-    </p>
-    <div class='list-heading'>List of Syncfusion Blazor UI components used in this sample</div>
-    <div class='about-component'>
-        <div class='control-item'>
-            <span class="sfimage-schedule e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/scheduler/getting-started" target="_blank">Schedule</a>
+    <div class="about-hero">
+        <div class="hero-copy">
+            <span class="eyebrow">SYNCFUSION BLAZOR SHOWCASE</span>
+            <h2>Real clinic workflows, built with composable UI.</h2>
+            <p>This example clinic brings scheduling, patient management, doctor availability, and operational insights together in one working application.</p>
+            <div class="hero-actions">
+                <a class="e-btn e-primary" href="https://github.com/syncfusion/blazor-showcase-appointment-planner" target="_blank" rel="noopener">View source code</a>
+                <a class="e-btn e-outline" href="https://blazor.syncfusion.com/" target="_blank" rel="noopener">Explore Syncfusion Blazor</a>
+            </div>
         </div>
-        <div class='control-item'>
-            <span class="sfimage-grid e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/datagrid/getting-started" target="_blank">Grid</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-chart e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/chart/getting-started-wasm" target="_blank">Chart</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-treeview e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/treeview/getting-started" target="_blank">TreeView</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-listview e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/listview/getting-started" target="_blank">ListView</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-dropdownlist e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/dropdown-list/getting-started" target="_blank">DropDownList</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-datepicker e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/datepicker/getting-started" target="_blank">DatePicker</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-timepicker e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/timepicker/getting-started" target="_blank">TimePicker</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-dialog e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/dialog/getting-started" target="_blank">Dialog</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-sidebar e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/sidebar/getting-started" target="_blank">Sidebar</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-textboxes e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/textbox/getting-started" target="_blank">TextBox</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-button e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/button/getting-started" target="_blank">Button</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-toast e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/toast/getting-started" target="_blank">Toast</a>
-        </div>
-        <div class='control-item'>
-            <span class="sfimage-checkbox e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/check-box/getting-started" target="_blank">CheckBox</a>
-        </div>
-        <div class='control-item'>
-            <span class="sf-icon-skeleton e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/skeleton/getting-started" target="_blank">Skeleton</a>
-        </div>
-        <div class='control-item'>
-            <span class="sf-icon-appbar e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/appbar/getting-started" target="_blank">AppBar</a>
-        </div>
-        <div class='control-item'>
-            <span class="sf-icon-predefineddialogs e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/dialog/predefined-dialogs" target="_blank">Predefined Dialogs</a>
-        </div>
-        <div class='control-item'>
-            <span class="sf-icon-message e-sb-icon control-icon"></span>
-            <a class='control-name' href="https://blazor.syncfusion.com/documentation/message/getting-started" target="_blank">Message</a>
-        </div>
+
+    </div>
+    <div class="component-heading">
+        <div><h2>Components in this sample</h2><p>See how each control supports a real workflow.</p></div>
+    </div>
+    <div class="about-component-groups">
+        @foreach (var group in showcaseComponents.GroupBy(item => item.Category))
+        {
+            <section class="component-group">
+                <h3>@group.Key</h3>
+                <div class="component-grid">
+                    @foreach (var item in group)
+                    {
+                        <SfCard CssClass="showcase-component-card">
+                            <CardContent>
+                                <span class="@item.Icon e-sb-icon control-icon"></span>
+                                <div class="component-card-copy"><strong>@item.Name</strong><span>@item.Description</span></div>
+                                <a class="component-link" href="@item.Url" target="_blank" rel="noopener" aria-label="Open @item.Name documentation">Docs <span class="e-icons e-arrow-right"></span></a>
+                            </CardContent>
+                        </SfCard>
+                    }
+                </div>
+            </section>
+        }
     </div>
 </div>
 }
@@ -120,19 +76,37 @@ else
     private bool isDataLoaded;
     private string aboutId;
 
-    private async void LoadData()
+    private readonly List<ShowcaseComponent> showcaseComponents = new()
+    {
+        new("Scheduling", "Schedule", "sfimage-schedule", "Resource-based appointment planning.", "https://blazor.syncfusion.com/documentation/scheduler/getting-started-with-server-app"),
+        new("Data and analytics", "Grid", "sfimage-grid", "Searchable patient administration.", "https://blazor.syncfusion.com/documentation/datagrid/getting-started-with-server-app"),
+        new("Data and analytics", "Chart", "sfimage-chart", "Visual appointment trends.", "https://blazor.syncfusion.com/documentation/chart/getting-started"),
+        new("Forms and input", "DropDownList", "sfimage-dropdownlist", "Fast filtering and configuration.", "https://blazor.syncfusion.com/documentation/dropdown-list/getting-started-with-server-app"),
+        new("Forms and input", "DatePicker", "sfimage-datepicker", "Date-aware appointment forms.", "https://blazor.syncfusion.com/documentation/datepicker/getting-started-with-server-app"),
+        new("Forms and input", "TextBox", "sfimage-textboxes", "Validated patient and doctor fields.", "https://blazor.syncfusion.com/documentation/textbox/getting-started-with-server-app"),
+        new("Dialogs and feedback", "Dialog", "sfimage-dialog", "Focused add, edit, and review flows.", "https://blazor.syncfusion.com/documentation/dialog/getting-started-with-server-app"),
+        new("Dialogs and feedback", "Predefined Dialogs", "sf-icon-predefineddialogs", "Clear confirmation workflows.", "https://blazor.syncfusion.com/documentation/predefined-dialogs/getting-started-with-server-app"),
+        new("Dialogs and feedback", "Message", "sf-icon-message", "Inline status communication.", "https://blazor.syncfusion.com/documentation/message/getting-started-with-server-app"),
+        new("Navigation and layout", "Sidebar", "sfimage-sidebar", "Persistent application navigation.", "https://blazor.syncfusion.com/documentation/sidebar/getting-started"),
+       new("Navigation and layout", "Button", "sfimage-button", "Explicit workflow actions.", "https://blazor.syncfusion.com/documentation/button/getting-started-with-server-app"),
+        new("Loading", "Skeleton", "sf-icon-skeleton", "Comfortable loading transitions.", "https://blazor.syncfusion.com/documentation/skeleton/getting-started")
+    };
+
+    private async Task LoadData()
     {
         this.aboutId = "about";
         await Task.Delay(100);
         isDataLoaded = true;
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            LoadData();
+            await LoadData();
         }
     }
+
+    private sealed record ShowcaseComponent(string Category, string Name, string Icon, string Description, string Url);
 }

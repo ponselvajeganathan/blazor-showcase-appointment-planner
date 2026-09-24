@@ -1,7 +1,31 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿/* @import url('/open-iconic/font/css/open-iconic-bootstrap.min.css'); */
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.skip-link {
+    position: absolute;
+    top: -48px;
+    left: 8px;
+    z-index: 10000;
+    padding: 10px 18px;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 0 0 8px 8px;
+    text-decoration: none;
+    transition: top .15s ease-in;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+.planner-wrapper :is(button, a, input, select, textarea, [tabindex]):focus-visible {
+    outline: 3px solid #0a8a8a !important;
+    outline-offset: 2px !important;
 }
 
 a, .btn-link {
@@ -179,9 +203,8 @@ app {
     cursor: pointer;
 }
 .nav-item.e-list-item:hover {
-    background-color: #f5f5f5;
-    border-color: transparent;
-    color: rgba(51,51,51,.87);
+
+    color: #666;
 }
 ul.nav.flex-column {
     margin: 0 16px;
@@ -220,7 +243,7 @@ ul.nav.flex-column {
     align-items: center;
     gap: 20px;
 }
-.footer-logo{
+.footer-logo {
     width: 38px;
     height: 38px;
 }
@@ -306,7 +329,7 @@ ul.nav.flex-column {
     }
 
     .footer-content .buttons .e-trial-btn::after {
-        display: none;
+        display:none;
     }
 }
 

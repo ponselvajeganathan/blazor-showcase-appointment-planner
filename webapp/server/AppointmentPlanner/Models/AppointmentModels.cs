@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -27,7 +27,67 @@ namespace AppointmentPlanner.Models
         public string Location { get; set; }
 
         public Hospital() { }
+        private static readonly Random Rand = new();
 
+        private static DateTime GetRandom2026Date()
+        {
+            int month = Rand.Next(1, 13);
+
+            int day = Rand.Next(
+                1,
+                DateTime.DaysInMonth(2026, month) + 1);
+
+            int hour = Rand.Next(8, 18);
+
+            int[] minutes = { 0, 15, 30, 45 };
+
+            return new DateTime(
+                2026,
+                month,
+                day,
+                hour,
+                minutes[Rand.Next(minutes.Length)],
+                0);
+        }
+        private static void ApplyDynamicDates(List<Hospital> appointments)
+{
+    var startDate = DateTime.Today;
+
+    int currentIndex = 0;
+
+    for (int day = 0; day < 30; day++)
+    {
+        int dailyCount = Rand.Next(5, 11);
+
+        DateTime scheduleDate = startDate.AddDays(day);
+
+        for (int i = 0;
+             i < dailyCount && currentIndex < appointments.Count;
+             i++)
+        {
+            int hour = Rand.Next(8, 17);
+
+            int minute =
+                new[] { 0, 15, 30, 45 }[Rand.Next(4)];
+
+            appointments[currentIndex].StartTime =
+                new DateTime(
+                    scheduleDate.Year,
+                    scheduleDate.Month,
+                    scheduleDate.Day,
+                    hour,
+                    minute,
+                    0);
+
+            appointments[currentIndex].EndTime =
+                appointments[currentIndex]
+                .StartTime
+                .AddMinutes(30);
+
+            currentIndex++;
+        }
+    }
+}
         public Hospital(int Id, string Name, DateTime StartTime, DateTime EndTime, string Disease, string DepartmentName, int DepartmentId, int DoctorId, int PatientId, string Symptoms)
         {
             this.Id = Id;
@@ -46,40 +106,61 @@ namespace AppointmentPlanner.Models
         {
             List<Hospital> data = new List<Hospital>
             {
-                new Hospital(1000, "Milka", new DateTime(2020, 2, 5, 10, 30, 0), new DateTime(2020, 2, 5, 11, 30, 0), "Bone Fracture", "ORTHOPEDICS", 4, 5, 2, "Swelling or bruising over a bone, Pain in the injured area"),
-                new Hospital(1001, "Janet", new DateTime(2020, 2, 3, 11, 0, 0), new DateTime(2020, 2, 3, 12, 0, 0), "Biological Problems", "GENERAL", 1, 3, 4, "Physical aches or pain, Memory difficulties or personality changes"),
-                new Hospital(1002, "Mercy", new DateTime(2020, 2, 2, 10, 0, 0), new DateTime(2020, 2, 2, 11, 0, 0), "Skin Problem", "DERMATOLOGY", 3, 4, 5, "outbreak of swollen, pale red bumps or plaques"),
-                new Hospital(1003, "Laura", new DateTime(2020, 2, 9, 10, 0, 0), new DateTime(2020, 2, 9, 11, 0, 0), "Feeling very hungry - even though you are eating", "DIABETOLOGY", 5, 6, 1, "Urinating often, Extreme fatigue, Blurry vision"),
-                new Hospital(1004, "Richa", new DateTime(2020, 2, 7, 10, 0, 0), new DateTime(2020, 2, 7, 11, 0, 0), "Skin care treatment", "DERMATOLOGIST", 3, 4, 2, "Scaly or rough skin, Peeling skin, open sores or lesions"),
-                new Hospital(1005, "Adams", new DateTime(2020, 2, 7, 13, 30, 0), new DateTime(2020, 2, 7, 14, 0, 0), "General Checkup", "GENERAL", 1, 1, 3, "Decreased energy, Chronic fatigue, Difficulty concentrating"),
-                new Hospital(1006, "Richa", new DateTime(2020, 2, 7, 16, 0, 0), new DateTime(2020, 2, 7, 17, 0, 0), "Left Arm Fracture", "ORTHOPEDICS", 4, 5, 6, "Swelling, warmth, or redness in the joint"),
-                new Hospital(1007, "Adams", new DateTime(2020, 2, 13, 11, 0, 0), new DateTime(2020, 2, 13, 11, 30, 0), "Chest Pain", "CARDIOLOGY", 6, 7, 2, "Shortness of breath, Swollen feet or ankles"),
-                new Hospital(1008, "Milka", new DateTime(2020, 2, 13, 9, 0, 0), new DateTime(2020, 2, 13, 10, 0, 0), "Skin Care Treatment", "DERMATOLOGIST", 3, 4, 2, "a rash, which might be painful or itchy"),
-                new Hospital(1009, "Adams", new DateTime(2020, 2, 10, 14, 0, 0), new DateTime(2020, 2, 10, 16, 0, 0), "Surgery Treatment", "GENERAL", 1, 1, 3, "Pain at Site, Swelling/Hardening"),
-                new Hospital(1010, "Adams", new DateTime(2020, 2, 11, 11, 0, 0), new DateTime(2020, 2, 11, 13, 0, 0), "Bone Problem", "ORTHOPEDICS", 4, 5, 3, "Recurring or constant joint pain or tenderness"),
+                new Hospital(1000, "Milka", new DateTime(2026, 2, 5, 10, 30, 0), new DateTime(2026, 2, 5, 11, 30, 0), "Bone Fracture", "ORTHOPEDICS", 4, 5, 2, "Swelling or bruising over a bone, Pain in the injured area"),
+                new Hospital(1001, "Janet", new DateTime(2026, 2, 3, 11, 0, 0), new DateTime(2026, 2, 3, 12, 0, 0), "Biological Problems", "GENERAL", 1, 3, 4, "Physical aches or pain, Memory difficulties or personality changes"),
+                new Hospital(1002, "Mercy", new DateTime(2026, 2, 2, 10, 0, 0), new DateTime(2026, 2, 2, 11, 0, 0), "Skin Problem", "DERMATOLOGY", 3, 4, 5, "outbreak of swollen, pale red bumps or plaques"),
+                new Hospital(1003, "Laura", new DateTime(2026, 2, 9, 10, 0, 0), new DateTime(2026, 2, 9, 11, 0, 0), "Feeling very hungry - even though you are eating", "DIABETOLOGY", 5, 6, 1, "Urinating often, Extreme fatigue, Blurry vision"),
+                new Hospital(1004, "Richa", new DateTime(2026, 2, 7, 10, 0, 0), new DateTime(2026, 2, 7, 11, 0, 0), "Skin care treatment", "DERMATOLOGIST", 3, 4, 2, "Scaly or rough skin, Peeling skin, open sores or lesions"),
+                new Hospital(1005, "Adams", new DateTime(2026, 2, 7, 13, 30, 0), new DateTime(2026, 2, 7, 14, 0, 0), "General Checkup", "GENERAL", 1, 1, 3, "Decreased energy, Chronic fatigue, Difficulty concentrating"),
+                new Hospital(1006, "Richa", new DateTime(2026, 2, 7, 16, 0, 0), new DateTime(2026, 2, 7, 17, 0, 0), "Left Arm Fracture", "ORTHOPEDICS", 4, 5, 6, "Swelling, warmth, or redness in the joint"),
+                new Hospital(1007, "Adams", new DateTime(2026, 2, 13, 11, 0, 0), new DateTime(2026, 2, 13, 11, 30, 0), "Chest Pain", "CARDIOLOGY", 6, 7, 2, "Shortness of breath, Swollen feet or ankles"),
+                new Hospital(1008, "Milka", new DateTime(2026, 2, 13, 9, 0, 0), new DateTime(2026, 2, 13, 10, 0, 0), "Skin Care Treatment", "DERMATOLOGIST", 3, 4, 2, "a rash, which might be painful or itchy"),
+                new Hospital(1009, "Adams", new DateTime(2026, 2, 10, 14, 0, 0), new DateTime(2026, 2, 10, 16, 0, 0), "Surgery Treatment", "GENERAL", 1, 1, 3, "Pain at Site, Swelling/Hardening"),
+                new Hospital(1010, "Adams", new DateTime(2026, 2, 11, 11, 0, 0), new DateTime(2026, 2, 11, 13, 0, 0), "Bone Problem", "ORTHOPEDICS", 4, 5, 3, "Recurring or constant joint pain or tenderness"),
 
-                new Hospital(1011, "Adams", new DateTime(2020, 2, 1, 11, 0, 0), new DateTime(2020, 2, 1, 12, 0, 0), "General Checkup", "GENERAL", 1, 3, 1, "a pulsating feeling in the head, sensitivity to sound and light"),
-                new Hospital(1012, "Janet", new DateTime(2020, 2, 1, 16, 0, 0), new DateTime(2020, 2, 1, 17, 0, 0), "Complete loss of sensation", "NEUROLOGY", 2, 2, 4, "Partial or complete paralysis, Muscle weakness"),
-                new Hospital(1013, "Laura", new DateTime(2020, 2, 5, 13, 0, 0), new DateTime(2020, 2, 5, 14, 0, 0), "Health Checkup", "GENERAL", 1, 1, 1, "Sweating, Chills and Shivering"),
-                new Hospital(1014, "Adams", new DateTime(2020, 2, 5, 16, 0, 0), new DateTime(2020, 2, 5, 17, 0, 0), "Eye and Spectacles Checkup", "GENERAL", 1, 3, 3, "Frequent squinting, Eye fatigue or strain"),
-                new Hospital(1015, "Milka", new DateTime(2020, 2, 6, 12, 0, 0), new DateTime(2020, 2, 6, 13, 0, 0), "Feeling very hungry - even though you are eating", "DIABETOLOGY", 5, 6, 2, "Urinating often, Extreme fatigue, Blurry vision"),
-                new Hospital(1016, "Adams", new DateTime(2020, 2, 6, 18, 0, 0), new DateTime(2020, 2, 6, 18, 30, 0), "Kidney disease", "DIABETOLOGY", 5, 6, 3, "Decreased urine output"),
-                new Hospital(1017, "Janet", new DateTime(2020, 2, 4, 14, 0, 0), new DateTime(2020, 2, 4, 14, 30, 0), "Gastroparesis", "DIABETOLOGY", 5, 6, 4, "A feeling of fullness after eating just a few bites"),
-                new Hospital(1018, "Laura", new DateTime(2020, 2, 4, 12, 0, 0), new DateTime(2020, 2, 4, 13, 0, 0), "Sleep apnea", "DIABETOLOGY", 5, 6, 1, "Gasping for air during sleep"),
-                new Hospital(1019, "Milka", new DateTime(2020, 2, 4, 10, 0, 0), new DateTime(2020, 2, 4, 11, 0, 0), "Vision problems", "DIABETOLOGY", 5, 6, 2, "Severe, sudden eye pain"),
-                new Hospital(1020, "Milka", new DateTime(2020, 2, 2, 12, 0, 0), new DateTime(2020, 2, 2, 13, 0, 0), "Feeling very hungry - even though you are eating", "DIABETOLOGY", 5, 6, 2, "Urinating often, Extreme fatigue, Blurry vision"),
+                new Hospital(1011, "Adams", new DateTime(2026, 2, 1, 11, 0, 0), new DateTime(2026, 2, 1, 12, 0, 0), "General Checkup", "GENERAL", 1, 3, 1, "a pulsating feeling in the head, sensitivity to sound and light"),
+                new Hospital(1012, "Janet", new DateTime(2026, 2, 1, 16, 0, 0), new DateTime(2026, 2, 1, 17, 0, 0), "Complete loss of sensation", "NEUROLOGY", 2, 2, 4, "Partial or complete paralysis, Muscle weakness"),
+                new Hospital(1013, "Laura", new DateTime(2026, 2, 5, 13, 0, 0), new DateTime(2026, 2, 5, 14, 0, 0), "Health Checkup", "GENERAL", 1, 1, 1, "Sweating, Chills and Shivering"),
+                new Hospital(1014, "Adams", new DateTime(2026, 2, 5, 16, 0, 0), new DateTime(2026, 2, 5, 17, 0, 0), "Eye and Spectacles Checkup", "GENERAL", 1, 3, 3, "Frequent squinting, Eye fatigue or strain"),
+                new Hospital(1015, "Milka", new DateTime(2026, 2, 6, 12, 0, 0), new DateTime(2026, 2, 6, 13, 0, 0), "Feeling very hungry - even though you are eating", "DIABETOLOGY", 5, 6, 2, "Urinating often, Extreme fatigue, Blurry vision"),
+                new Hospital(1016, "Adams", new DateTime(2026, 2, 6, 18, 0, 0), new DateTime(2026, 2, 6, 18, 30, 0), "Kidney disease", "DIABETOLOGY", 5, 6, 3, "Decreased urine output"),
+                new Hospital(1017, "Janet", new DateTime(2026, 2, 4, 14, 0, 0), new DateTime(2026, 2, 4, 14, 30, 0), "Gastroparesis", "DIABETOLOGY", 5, 6, 4, "A feeling of fullness after eating just a few bites"),
+                new Hospital(1018, "Laura", new DateTime(2026, 2, 4, 12, 0, 0), new DateTime(2026, 2, 4, 13, 0, 0), "Sleep apnea", "DIABETOLOGY", 5, 6, 1, "Gasping for air during sleep"),
+                new Hospital(1019, "Milka", new DateTime(2026, 2, 4, 10, 0, 0), new DateTime(2026, 2, 4, 11, 0, 0), "Vision problems", "DIABETOLOGY", 5, 6, 2, "Severe, sudden eye pain"),
+                new Hospital(1020, "Milka", new DateTime(2026, 2, 2, 12, 0, 0), new DateTime(2026, 2, 2, 13, 0, 0), "Feeling very hungry - even though you are eating", "DIABETOLOGY", 5, 6, 2, "Urinating often, Extreme fatigue, Blurry vision"),
 
-                new Hospital(1021, "Adams", new DateTime(2020, 2, 6, 10, 0, 0), new DateTime(2020, 2, 6, 11, 0, 0), "Bone Fracture", "ORTHOPEDICS", 4, 5, 3, "Swelling or bruising over a bone, Pain in the injured area"),
-                new Hospital(1022, "Mercy", new DateTime(2020, 2, 2, 15, 0, 0), new DateTime(2020, 2, 2, 15, 30, 0), "Left Arm Fracture", "ORTHOPEDICS", 4, 5, 5, "Deformity, such as a bent arm or wrist"),
-                new Hospital(1023, "Milka", new DateTime(2020, 2, 6, 14, 0, 0), new DateTime(2020, 2, 6, 14, 30, 0), "Rapid heartbeat", "CARDIOLOGY", 6, 7, 2, "Fluttering sensation in the chest"),
-                new Hospital(1024, "Adams", new DateTime(2020, 2, 4, 17, 30, 0), new DateTime(2020, 2, 4, 18, 30, 0), "Lightheadedness", "CARDIOLOGY", 6, 7, 3, "Sudden drop in blood pressure"),
-                new Hospital(1025, "Janet", new DateTime(2020, 2, 4, 15, 0, 0), new DateTime(2020, 2, 4, 15, 30, 0), "Shortness of breath", "CARDIOLOGY", 6, 7, 4, "Nasal congestion, runny nose, itchy or watery eyes"),
+                new Hospital(1021, "Adams", new DateTime(2026, 2, 6, 10, 0, 0), new DateTime(2026, 2, 6, 11, 0, 0), "Bone Fracture", "ORTHOPEDICS", 4, 5, 3, "Swelling or bruising over a bone, Pain in the injured area"),
+                new Hospital(1022, "Mercy", new DateTime(2026, 2, 2, 15, 0, 0), new DateTime(2026, 2, 2, 15, 30, 0), "Left Arm Fracture", "ORTHOPEDICS", 4, 5, 5, "Deformity, such as a bent arm or wrist"),
+                new Hospital(1023, "Milka", new DateTime(2026, 2, 6, 14, 0, 0), new DateTime(2026, 2, 6, 14, 30, 0), "Rapid heartbeat", "CARDIOLOGY", 6, 7, 2, "Fluttering sensation in the chest"),
+                new Hospital(1024, "Adams", new DateTime(2026, 2, 4, 17, 30, 0), new DateTime(2026, 2, 4, 18, 30, 0), "Lightheadedness", "CARDIOLOGY", 6, 7, 3, "Sudden drop in blood pressure"),
+                new Hospital(1025, "Janet", new DateTime(2026, 2, 4, 15, 0, 0), new DateTime(2026, 2, 4, 15, 30, 0), "Shortness of breath", "CARDIOLOGY", 6, 7, 4, "Nasal congestion, runny nose, itchy or watery eyes"),
 
-                new Hospital(1026, "Milka", new DateTime(2020, 2, 3, 17, 0, 0), new DateTime(2020, 2, 3, 18, 30, 0), "Chest pain or discomfort", "CARDIOLOGY", 6, 7, 2, "Fast heart beat, and trouble breathing"),
-                new Hospital(1027, "Milka", new DateTime(2020, 2, 6, 15, 30, 0), new DateTime(2020, 2, 6, 16, 0, 0), "Racing heartbeat", "CARDIOLOGY", 6, 7, 2, "A fluttering in your chest"),
-                new Hospital(1028, "Milka", new DateTime(2020, 2, 3, 14, 0, 0), new DateTime(2020, 2, 3, 14, 30, 0), "Heart Problem", "CARDIOLOGY", 6, 7, 2, "Fluid buildup from being overweight"),
-                new Hospital(1029, "Milka", new DateTime(2020, 2, 5, 19, 0, 0), new DateTime(2020, 2, 5, 19, 30, 0), "Dizziness", "DIABETOLOGY", 5, 6, 2, "Feeling of lightheadedness or nearly fainting")
+                new Hospital(1026, "Milka", new DateTime(2026, 2, 3, 17, 0, 0), new DateTime(2026, 2, 3, 18, 30, 0), "Chest pain or discomfort", "CARDIOLOGY", 6, 7, 2, "Fast heart beat, and trouble breathing"),
+                new Hospital(1027, "Milka", new DateTime(2026, 2, 6, 15, 30, 0), new DateTime(2026, 2, 6, 16, 0, 0), "Racing heartbeat", "CARDIOLOGY", 6, 7, 2, "A fluttering in your chest"),
+                new Hospital(1028, "Milka", new DateTime(2026, 2, 3, 14, 0, 0), new DateTime(2026, 2, 3, 14, 30, 0), "Heart Problem", "CARDIOLOGY", 6, 7, 2, "Fluid buildup from being overweight"),
+                new Hospital(1029, "Milka", new DateTime(2026, 2, 5, 19, 0, 0), new DateTime(2026, 2, 5, 19, 30, 0), "Dizziness", "DIABETOLOGY", 5, 6, 2, "Feeling of lightheadedness or nearly fainting"),
+                new Hospital(1030, "Ethan Brooks", new DateTime(2026, 2, 3, 9, 0, 0),  new DateTime(2026, 2, 3, 10, 0, 0),  "Partial Paralysis",   "NEUROLOGY",    2, 2, 8,  "Muscle weakness on one side of the body"),
+                new Hospital(1031, "Liam Carter",  new DateTime(2026, 2, 4, 10, 0, 0), new DateTime(2026, 2, 4, 10, 30, 0), "Statin Therapy",      "CARDIOLOGY",   6, 1, 9,  "High cholesterol follow-up"),
+                new Hospital(1032, "Ava Mitchell", new DateTime(2026, 2, 4, 11, 0, 0), new DateTime(2026, 2, 4, 12, 0, 0),  "Angioplasty",         "CARDIOLOGY",   6, 7, 10, "Chest discomfort after exertion"),
+                new Hospital(1033, "Noah Patel",   new DateTime(2026, 2, 5, 9, 30, 0), new DateTime(2026, 2, 5, 10, 0, 0),  "Muscle Weakness",     "NEUROLOGY",    2, 2, 11, "Difficulty lifting arms"),
+                new Hospital(1034, "Sophia Reyes", new DateTime(2026, 2, 5, 13, 0, 0), new DateTime(2026, 2, 5, 13, 30, 0), "Post-op Recovery",    "NEUROLOGY",    2, 2, 12, "Memory lapses, follow-up"),
+                new Hospital(1035, "Harper Kim",   new DateTime(2026, 2, 6, 10, 0, 0), new DateTime(2026, 2, 6, 10, 30, 0), "Seizures",            "NEUROLOGY",    2, 2, 13, "Recurring seizures"),
+                new Hospital(1036, "Mason Lee",    new DateTime(2026, 2, 6, 11, 0, 0), new DateTime(2026, 2, 6, 11, 30, 0), "Antenatal Check",     "GENERAL",      1, 1, 14, "Routine antenatal visit"),
+                new Hospital(1037, "Olivia Bennett", new DateTime(2026, 2, 7, 9, 0, 0),  new DateTime(2026, 2, 7, 9, 30, 0),  "Hypertension",        "GENERAL",      1, 3, 15, "Elevated blood pressure"),
+                new Hospital(1038, "William Foster", new DateTime(2026, 2, 8, 14, 0, 0), new DateTime(2026, 2, 8, 15, 0, 0),  "Cardiac Arrhythmia",  "CARDIOLOGY",   6, 7, 16, "Irregular heartbeat"),
+                new Hospital(1039, "Isabella Cruz", new DateTime(2026, 2, 3, 8, 0, 0),  new DateTime(2026, 2, 3, 8, 30, 0),   "Asthma Review",       "GENERAL",      1, 3, 17, "Wheezing, shortness of breath"),
+                new Hospital(1040, "James Anderson", new DateTime(2026, 2, 4, 15, 0, 0), new DateTime(2026, 2, 4, 15, 30, 0), "Migraine",            "NEUROLOGY",    2, 2, 18, "Severe recurring headaches"),
+                new Hospital(1041, "Mia Thompson",   new DateTime(2026, 2, 5, 11, 0, 0), new DateTime(2026, 2, 5, 11, 30, 0), "Ear Infection",       "GENERAL",      1, 1, 19, "Ear pain, mild fever"),
+                new Hospital(1042, "Benjamin Singh", new DateTime(2026, 2, 6, 14, 0, 0), new DateTime(2026, 2, 6, 14, 30, 0), "Diabetes Follow-up",  "DIABETOLOGY",  5, 6, 20, "Blood sugar management"),
+                new Hospital(1043, "Charlotte Diaz", new DateTime(2026, 2, 7, 10, 0, 0), new DateTime(2026, 2, 7, 10, 30, 0), "Vaccination",         "GENERAL",      1, 1, 21, "Routine childhood immunization"),
+                new Hospital(1044, "Henry Walker",   new DateTime(2026, 2, 8, 11, 0, 0), new DateTime(2026, 2, 8, 11, 30, 0), "Cataract Screening",  "GENERAL",      1, 3, 22, "Blurred vision, light sensitivity"),
+                new Hospital(1045, "Amelia Ross",    new DateTime(2026, 2, 3, 13, 0, 0), new DateTime(2026, 2, 3, 13, 30, 0), "Psoriasis Flare-up",  "DERMATOLOGY",  3, 4, 23, "Red scaly patches on elbows"),
+                new Hospital(1046, "Lucas Martin",   new DateTime(2026, 2, 4, 16, 0, 0), new DateTime(2026, 2, 4, 16, 30, 0), "Sprained Ankle",      "ORTHOPEDICS",  4, 5, 24, "Pain and swelling after fall"),
+                new Hospital(1047, "Evelyn Garcia",  new DateTime(2026, 2, 5, 15, 0, 0), new DateTime(2026, 2, 5, 15, 30, 0), "Thyroid Check",       "GENERAL",      1, 1, 25, "Fatigue, weight changes"),
+                new Hospital(1048, "Logan Murphy",   new DateTime(2026, 2, 6, 9, 0, 0),  new DateTime(2026, 2, 6, 9, 30, 0),  "Allergy Rash",        "DERMATOLOGY",  3, 4, 26, "Itchy rash on arms and back"),
+                new Hospital(1049, "Aria Khan",      new DateTime(2026, 2, 7, 13, 0, 0), new DateTime(2026, 2, 7, 13, 30, 0), "Knee Pain",           "ORTHOPEDICS",  4, 5, 27, "Persistent knee pain")
             };
+            ApplyDynamicDates(data);
             return data;
         }
     }
@@ -135,7 +216,27 @@ namespace AppointmentPlanner.Models
                 new Patient(4, "Janet", "Janet", new DateTime(2000, 7, 3), "(071) 555-4544", "janet79@rpy.com", "4110 Old Redmond Rd.", "Biological Problem", "GENERAL", "B +ve", "Male", "Physical aches or pain, Memory difficulties or personality change"),
                 new Patient(5, "Mercy", "Mercy", new DateTime(2005, 4, 29), "(071) 555-5444", "mercy60@sample.com", "14 Garrett Hill", "Skin Hives", "DERMATOLOGY", "AB -ve", "Female", "outbreak of swollen, pale red bumps or plaques"),
                 new Patient(6, "Richa", "Richa", new DateTime(1989, 10, 29), "(206) 555-4444", "richa46@mail.com", "Coventry House\r\nMiner Rd.", "Arm Fracture", "ORTHOPEDICS", "B +ve", "Female", "Swelling, warmth, or redness in the joint"),
-                new Patient(7, "Maud Oliver", "Maud Oliver", new DateTime(1989, 10, 29), "(206) 666-4444", "moud46@rpy.com", "Coventry House\r\nMiner Rd.", "Racing heartbeat", "CARDIOLOGY", "B +ve", "Male", "A fluttering in your chest")
+                new Patient(7, "Maud Oliver", "Maud Oliver", new DateTime(1989, 10, 29), "(206) 666-4444", "moud46@rpy.com", "Coventry House\r\nMiner Rd.", "Racing heartbeat", "CARDIOLOGY", "B +ve", "Male", "A fluttering in your chest"),
+                new Patient(8, "Ethan Brooks", "Ethan", new DateTime(2001, 5, 14), "(071) 555-1101", "ethan01@mail.com", "12 Pine Lane", "Partial Paralysis", "NEUROLOGY", "O +ve", "Male", "Muscle weakness on one side of the body"),
+                new Patient(9, "Liam Carter", "Liam", new DateTime(1981, 8, 22), "(071) 555-1102", "liam02@mail.com", "45 Oak Drive", "Statin Therapy", "CARDIOLOGY", "A +ve", "Male", "High cholesterol, follow-up review"),
+                new Patient(10, "Ava Mitchell", "Ava", new DateTime(2006, 2, 9), "(071) 555-1103", "ava03@mail.com", "78 Maple St", "Angioplasty", "CARDIOLOGY", "B +ve", "Female", "Chest discomfort after exertion"),
+                new Patient(11, "Noah Patel", "Noah", new DateTime(1996, 11, 30), "(071) 555-1104", "noah04@mail.com", "9 Cedar Ct", "Muscle Weakness", "NEUROLOGY", "AB +ve", "Male", "Difficulty lifting arms, fatigue"),
+                new Patient(12, "Sophia Reyes", "Sophia", new DateTime(2008, 7, 4), "(071) 555-1105", "sophia05@mail.com", "23 Birch Rd", "Decreased Brain Activity", "NEUROLOGY", "O +ve", "Female", "Memory lapses, confusion"),
+                new Patient(13, "Harper Kim", "Harper", new DateTime(2000, 1, 18), "(071) 555-1106", "harper06@mail.com", "56 Walnut Ave", "Seizures", "NEUROLOGY", "B -ve", "Female", "Recurring seizures, follow-up"),
+                new Patient(14, "Mason Lee", "Mason", new DateTime(1998, 3, 27), "(071) 555-1107", "mason07@mail.com", "101 Elm Way", "Antenatal Check", "GENERAL", "O +ve", "Female", "Routine antenatal visit"),
+                new Patient(15, "Olivia Bennett", "Olivia", new DateTime(1974, 6, 12), "(071) 555-1108", "olivia08@mail.com", "300 Spruce St", "Hypertension", "GENERAL", "A +ve", "Female", "Elevated blood pressure readings"),
+                new Patient(16, "William Foster", "William", new DateTime(1965, 9, 5), "(071) 555-1109", "william09@mail.com", "17 Aspen Cir", "Cardiac Arrhythmia", "CARDIOLOGY", "O +ve", "Male", "Irregular heartbeat episodes"),
+                new Patient(17, "Isabella Cruz", "Isabella", new DateTime(2010, 4, 1), "(071) 555-1110", "isabella10@mail.com", "8 Willow Ln", "Asthma", "GENERAL", "O +ve", "Female", "Wheezing, shortness of breath"),
+                new Patient(18, "James Anderson", "James", new DateTime(1982, 12, 19), "(071) 555-1111", "james11@mail.com", "62 Poplar Ave", "Migraine", "NEUROLOGY", "B +ve", "Male", "Severe recurring headaches"),
+                new Patient(19, "Mia Thompson", "Mia", new DateTime(2012, 8, 8), "(071) 555-1112", "mia12@mail.com", "5 Hickory Pl", "Ear Infection", "GENERAL", "O +ve", "Female", "Ear pain, mild fever"),
+                new Patient(20, "Benjamin Singh", "Benjamin", new DateTime(1978, 10, 25), "(071) 555-1113", "benjamin13@mail.com", "140 Cypress Rd", "Diabetes Follow-up", "DIABETOLOGY", "B +ve", "Male", "Blood sugar management"),
+                new Patient(21, "Charlotte Diaz", "Charlotte", new DateTime(2014, 5, 16), "(071) 555-1114", "charlotte14@mail.com", "33 Sycamore Dr", "Vaccination", "GENERAL", "A +ve", "Female", "Routine childhood immunization"),
+                new Patient(22, "Henry Walker", "Henry", new DateTime(1969, 7, 30), "(071) 555-1115", "henry15@mail.com", "88 Redwood Blvd", "Cataract Screening", "GENERAL", "O +ve", "Male", "Blurred vision, light sensitivity"),
+                new Patient(23, "Amelia Ross", "Amelia", new DateTime(1995, 11, 11), "(071) 555-1116", "amelia16@mail.com", "21 Sequoia Way", "Psoriasis Flare-up", "DERMATOLOGY", "AB +ve", "Female", "Red scaly patches on elbows"),
+                new Patient(24, "Lucas Martin", "Lucas", new DateTime(2011, 2, 23), "(071) 555-1117", "lucas17@mail.com", "16 Magnolia Ct", "Sprained Ankle", "ORTHOPEDICS", "O +ve", "Male", "Pain and swelling after fall"),
+                new Patient(25, "Evelyn Garcia", "Evelyn", new DateTime(1971, 4, 9), "(071) 555-1118", "evelyn18@mail.com", "74 Beech St", "Thyroid Check", "GENERAL", "B -ve", "Female", "Fatigue, weight changes"),
+                new Patient(26, "Logan Murphy", "Logan", new DateTime(2015, 9, 14), "(071) 555-1119", "logan19@mail.com", "2 Aspen Pl", "Allergy Rash", "DERMATOLOGY", "O +ve", "Male", "Itchy rash on arms and back"),
+                new Patient(27, "Aria Khan", "Aria", new DateTime(1987, 6, 3), "(071) 555-1120", "aria20@mail.com", "99 Chestnut Rd", "Knee Pain", "ORTHOPEDICS", "A +ve", "Female", "Persistent knee pain, swelling")
             };
             return data;
         }
@@ -216,79 +317,79 @@ namespace AppointmentPlanner.Models
         {
             List<WorkDay> workDays = new List<WorkDay>
             {
-                new WorkDay("Sunday", 0, true, new DateTime(2020, 2, 01, 08, 0, 0), new DateTime(2020, 2, 01, 17, 0, 0), new DateTime(2020, 2, 01, 12, 0, 0), new DateTime(2020, 2, 01, 13, 0, 0), "AddBreak"),
-                new WorkDay("Monday", 1, false, new DateTime(2020, 2, 2, 8, 0, 0), new DateTime(2020, 2, 2, 17, 0, 0), new DateTime(2020, 2, 2, 12, 0, 0), new DateTime(2020, 2, 2, 13, 0, 0), "TimeOff"),
-                new WorkDay("Tuesday", 2, true, new DateTime(2020, 2, 3, 8, 0, 0), new DateTime(2020, 2, 3, 17, 0, 0), new DateTime(2020, 2, 3, 12, 0, 0), new DateTime(2020, 2, 3, 13, 0, 0), "AddBreak"),
-                new WorkDay("Wednesday", 3, true, new DateTime(2020, 2, 4, 8, 0, 0), new DateTime(2020, 2, 4, 17, 0, 0), new DateTime(2020, 2, 4, 12, 0, 0), new DateTime(2020, 2, 4, 13, 0, 0), "AddBreak"),
-                new WorkDay("Thursday", 4, true, new DateTime(2020, 2, 5, 08, 0, 0), new DateTime(2020, 2, 5, 17, 0, 0), new DateTime(2020, 2, 5, 12, 0, 0), new DateTime(2020, 2, 5, 13, 0, 0), "AddBreak"),
-                new WorkDay("Friday", 5, true, new DateTime(2020, 2, 6, 8, 0, 0), new DateTime(2020, 2, 6, 17, 0, 0), new DateTime(2020, 2, 6, 12, 0, 0), new DateTime(2020, 2, 6, 13, 0, 0), "RemoveBreak"),
-                new WorkDay("Saturday", 6, false, new DateTime(2020, 2, 7, 8, 0, 0), new DateTime(2020, 2, 7, 17, 0, 0), new DateTime(2020, 2, 7, 12, 0, 0), new DateTime(2020, 2, 7, 13, 0, 0), "TimeOff")
+                new WorkDay("Sunday", 0, true, new DateTime(2026, 2, 01, 08, 0, 0), new DateTime(2026, 2, 01, 17, 0, 0), new DateTime(2026, 2, 01, 12, 0, 0), new DateTime(2026, 2, 01, 13, 0, 0), "AddBreak"),
+                new WorkDay("Monday", 1, false, new DateTime(2026, 2, 2, 8, 0, 0), new DateTime(2026, 2, 2, 17, 0, 0), new DateTime(2026, 2, 2, 12, 0, 0), new DateTime(2026, 2, 2, 13, 0, 0), "TimeOff"),
+                new WorkDay("Tuesday", 2, true, new DateTime(2026, 2, 3, 8, 0, 0), new DateTime(2026, 2, 3, 17, 0, 0), new DateTime(2026, 2, 3, 12, 0, 0), new DateTime(2026, 2, 3, 13, 0, 0), "AddBreak"),
+                new WorkDay("Wednesday", 3, true, new DateTime(2026, 2, 4, 8, 0, 0), new DateTime(2026, 2, 4, 17, 0, 0), new DateTime(2026, 2, 4, 12, 0, 0), new DateTime(2026, 2, 4, 13, 0, 0), "AddBreak"),
+                new WorkDay("Thursday", 4, true, new DateTime(2026, 2, 5, 08, 0, 0), new DateTime(2026, 2, 5, 17, 0, 0), new DateTime(2026, 2, 5, 12, 0, 0), new DateTime(2026, 2, 5, 13, 0, 0), "AddBreak"),
+                new WorkDay("Friday", 5, true, new DateTime(2026, 2, 6, 8, 0, 0), new DateTime(2026, 2, 6, 17, 0, 0), new DateTime(2026, 2, 6, 12, 0, 0), new DateTime(2026, 2, 6, 13, 0, 0), "RemoveBreak"),
+                new WorkDay("Saturday", 6, false, new DateTime(2026, 2, 7, 8, 0, 0), new DateTime(2026, 2, 7, 17, 0, 0), new DateTime(2026, 2, 7, 12, 0, 0), new DateTime(2026, 2, 7, 13, 0, 0), "TimeOff")
             };
 
             List<WorkDay> workDays1 = new List<WorkDay>
             {
-                new WorkDay("Sunday", 0, true, new DateTime(2020, 2, 01, 10, 0, 0), new DateTime(2020, 2, 01, 19, 0, 0), new DateTime(2020, 2, 01, 14, 0, 0), new DateTime(2020, 2, 01, 15, 0, 0), "AddBreak"),
-                new WorkDay("Monday", 1, true, new DateTime(2020, 2, 2, 10, 0, 0), new DateTime(2020, 2, 2, 19, 0, 0), new DateTime(2020, 2, 2, 14, 0, 0), new DateTime(2020, 2, 2, 15, 0, 0), "RemoveBreak"),
-                new WorkDay("Tuesday", 2, true, new DateTime(2020, 2, 3, 10, 0, 0), new DateTime(2020, 2, 3, 19, 0, 0), new DateTime(2020, 2, 3, 14, 0, 0), new DateTime(2020, 2, 3, 15, 0, 0), "AddBreak"),
-                new WorkDay("Wednesday", 3, true, new DateTime(2020, 2, 4, 10, 0, 0), new DateTime(2020, 2, 4, 19, 0, 0), new DateTime(2020, 2, 4, 14, 0, 0), new DateTime(2020, 2, 4, 15, 0, 0), "AddBreak"),
-                new WorkDay("Thursday", 4, true, new DateTime(2020, 2, 5, 10, 0, 0), new DateTime(2020, 2, 5, 19, 0, 0), new DateTime(2020, 2, 5, 14, 0, 0), new DateTime(2020, 2, 5, 15, 0, 0), "RemoveBreak"),
-                new WorkDay("Friday", 5, false, new DateTime(2020, 2, 6, 10, 0, 0), new DateTime(2020, 2, 6, 19, 0, 0), new DateTime(2020, 2, 6, 14, 0, 0), new DateTime(2020, 2, 6, 15, 0, 0), "TimeOff"),
-                new WorkDay("Saturday", 6, false, new DateTime(2020, 2, 7, 10, 0, 0), new DateTime(2020, 2, 7, 19, 0, 0), new DateTime(2020, 2, 7, 14, 0, 0), new DateTime(2020, 2, 7, 15, 0, 0), "TimeOff")
+                new WorkDay("Sunday", 0, true, new DateTime(2026, 2, 01, 10, 0, 0), new DateTime(2026, 2, 01, 19, 0, 0), new DateTime(2026, 2, 01, 14, 0, 0), new DateTime(2026, 2, 01, 15, 0, 0), "AddBreak"),
+                new WorkDay("Monday", 1, true, new DateTime(2026, 2, 2, 10, 0, 0), new DateTime(2026, 2, 2, 19, 0, 0), new DateTime(2026, 2, 2, 14, 0, 0), new DateTime(2026, 2, 2, 15, 0, 0), "RemoveBreak"),
+                new WorkDay("Tuesday", 2, true, new DateTime(2026, 2, 3, 10, 0, 0), new DateTime(2026, 2, 3, 19, 0, 0), new DateTime(2026, 2, 3, 14, 0, 0), new DateTime(2026, 2, 3, 15, 0, 0), "AddBreak"),
+                new WorkDay("Wednesday", 3, true, new DateTime(2026, 2, 4, 10, 0, 0), new DateTime(2026, 2, 4, 19, 0, 0), new DateTime(2026, 2, 4, 14, 0, 0), new DateTime(2026, 2, 4, 15, 0, 0), "AddBreak"),
+                new WorkDay("Thursday", 4, true, new DateTime(2026, 2, 5, 10, 0, 0), new DateTime(2026, 2, 5, 19, 0, 0), new DateTime(2026, 2, 5, 14, 0, 0), new DateTime(2026, 2, 5, 15, 0, 0), "RemoveBreak"),
+                new WorkDay("Friday", 5, false, new DateTime(2026, 2, 6, 10, 0, 0), new DateTime(2026, 2, 6, 19, 0, 0), new DateTime(2026, 2, 6, 14, 0, 0), new DateTime(2026, 2, 6, 15, 0, 0), "TimeOff"),
+                new WorkDay("Saturday", 6, false, new DateTime(2026, 2, 7, 10, 0, 0), new DateTime(2026, 2, 7, 19, 0, 0), new DateTime(2026, 2, 7, 14, 0, 0), new DateTime(2026, 2, 7, 15, 0, 0), "TimeOff")
             };
 
             List<WorkDay> workDays2 = new List<WorkDay>
             {
-                new WorkDay("Sunday", 0, false, new DateTime(2020, 2, 01, 12, 0, 0), new DateTime(2020, 2, 01, 21, 0, 0), new DateTime(2020, 2, 01, 16, 0, 0), new DateTime(2020, 2, 01, 17, 0, 0), "TimeOff"),
-                new WorkDay("Monday", 1, true, new DateTime(2020, 2, 2, 12, 0, 0), new DateTime(2020, 2, 2, 21, 0, 0), new DateTime(2020, 2, 2, 16, 0, 0), new DateTime(2020, 2, 2, 17, 0, 0), "AddBreak"),
-                new WorkDay("Tuesday", 2, true, new DateTime(2020, 2, 3, 12, 0, 0), new DateTime(2020, 2, 3, 21, 0, 0), new DateTime(2020, 2, 3, 16, 0, 0), new DateTime(2020, 2, 3, 17, 0, 0), "AddBreak"),
-                new WorkDay("Wednesday", 3, true, new DateTime(2020, 2, 4, 12, 0, 0), new DateTime(2020, 2, 4, 21, 0, 0), new DateTime(2020, 2, 4, 16, 0, 0), new DateTime(2020, 2, 4, 17, 0, 0), "AddBreak"),
-                new WorkDay("Thursday", 4, true, new DateTime(2020, 2, 5, 12, 0, 0), new DateTime(2020, 2, 5, 21, 0, 0), new DateTime(2020, 2, 5, 16, 0, 0), new DateTime(2020, 2, 5, 17, 0, 0), "AddBreak"),
-                new WorkDay("Friday", 5, true, new DateTime(2020, 2, 6, 12, 0, 0), new DateTime(2020, 2, 6, 21, 0, 0), new DateTime(2020, 2, 6, 16, 0, 0), new DateTime(2020, 2, 6, 17, 0, 0), "RemoveBreak"),
-                new WorkDay("Saturday", 6, false, new DateTime(2020, 2, 7, 12, 0, 0), new DateTime(2020, 2, 7, 21, 0, 0), new DateTime(2020, 2, 7, 16, 0, 0), new DateTime(2020, 2, 7, 17, 0, 0), "TimeOff")
+                new WorkDay("Sunday", 0, false, new DateTime(2026, 2, 01, 12, 0, 0), new DateTime(2026, 2, 01, 21, 0, 0), new DateTime(2026, 2, 01, 16, 0, 0), new DateTime(2026, 2, 01, 17, 0, 0), "TimeOff"),
+                new WorkDay("Monday", 1, true, new DateTime(2026, 2, 2, 12, 0, 0), new DateTime(2026, 2, 2, 21, 0, 0), new DateTime(2026, 2, 2, 16, 0, 0), new DateTime(2026, 2, 2, 17, 0, 0), "AddBreak"),
+                new WorkDay("Tuesday", 2, true, new DateTime(2026, 2, 3, 12, 0, 0), new DateTime(2026, 2, 3, 21, 0, 0), new DateTime(2026, 2, 3, 16, 0, 0), new DateTime(2026, 2, 3, 17, 0, 0), "AddBreak"),
+                new WorkDay("Wednesday", 3, true, new DateTime(2026, 2, 4, 12, 0, 0), new DateTime(2026, 2, 4, 21, 0, 0), new DateTime(2026, 2, 4, 16, 0, 0), new DateTime(2026, 2, 4, 17, 0, 0), "AddBreak"),
+                new WorkDay("Thursday", 4, true, new DateTime(2026, 2, 5, 12, 0, 0), new DateTime(2026, 2, 5, 21, 0, 0), new DateTime(2026, 2, 5, 16, 0, 0), new DateTime(2026, 2, 5, 17, 0, 0), "AddBreak"),
+                new WorkDay("Friday", 5, true, new DateTime(2026, 2, 6, 12, 0, 0), new DateTime(2026, 2, 6, 21, 0, 0), new DateTime(2026, 2, 6, 16, 0, 0), new DateTime(2026, 2, 6, 17, 0, 0), "RemoveBreak"),
+                new WorkDay("Saturday", 6, false, new DateTime(2026, 2, 7, 12, 0, 0), new DateTime(2026, 2, 7, 21, 0, 0), new DateTime(2026, 2, 7, 16, 0, 0), new DateTime(2026, 2, 7, 17, 0, 0), "TimeOff")
             };
 
             List<WorkDay> workDays3 = new List<WorkDay>
             {
-                new WorkDay("Sunday", 0, false, new DateTime(2020, 2, 01, 8, 0, 0), new DateTime(2020, 2, 01, 17, 0, 0), new DateTime(2020, 2, 01, 12, 0, 0), new DateTime(2020, 2, 01, 13, 0, 0), "TimeOff"),
-                new WorkDay("Monday", 1, false, new DateTime(2020, 2, 2, 8, 0, 0), new DateTime(2020, 2, 2, 17, 0, 0), new DateTime(2020, 2, 2, 12, 0, 0), new DateTime(2020, 2, 2, 13, 0, 0), "TimeOff"),
-                new WorkDay("Tuesday", 2, true, new DateTime(2020, 2, 3, 8, 0, 0), new DateTime(2020, 2, 3, 17, 0, 0), new DateTime(2020, 2, 3, 12, 0, 0), new DateTime(2020, 2, 3, 13, 0, 0), "AddBreak"),
-                new WorkDay("Wednesday", 3, true, new DateTime(2020, 2, 4, 8, 0, 0), new DateTime(2020, 2, 4, 17, 0, 0), new DateTime(2020, 2, 4, 12, 0, 0), new DateTime(2020, 2, 4, 13, 0, 0), "AddBreak"),
-                new WorkDay("Thursday", 4, true, new DateTime(2020, 2, 5, 8, 0, 0), new DateTime(2020, 2, 5, 17, 0, 0), new DateTime(2020, 2, 5, 12, 0, 0), new DateTime(2020, 2, 5, 13, 0, 0), "AddBreak"),
-                new WorkDay("Friday", 5, true, new DateTime(2020, 2, 6, 8, 0, 0), new DateTime(2020, 2, 6, 17, 0, 0), new DateTime(2020, 2, 6, 12, 0, 0), new DateTime(2020, 2, 6, 13, 0, 0), "RemoveBreak"),
-                new WorkDay("Saturday", 6, true, new DateTime(2020, 2, 7, 8, 0, 0), new DateTime(2020, 2, 7, 17, 0, 0), new DateTime(2020, 2, 7, 12, 0, 0), new DateTime(2020, 2, 7, 13, 0, 0), "AddBreak")
+                new WorkDay("Sunday", 0, false, new DateTime(2026, 2, 01, 8, 0, 0), new DateTime(2026, 2, 01, 17, 0, 0), new DateTime(2026, 2, 01, 12, 0, 0), new DateTime(2026, 2, 01, 13, 0, 0), "TimeOff"),
+                new WorkDay("Monday", 1, false, new DateTime(2026, 2, 2, 8, 0, 0), new DateTime(2026, 2, 2, 17, 0, 0), new DateTime(2026, 2, 2, 12, 0, 0), new DateTime(2026, 2, 2, 13, 0, 0), "TimeOff"),
+                new WorkDay("Tuesday", 2, true, new DateTime(2026, 2, 3, 8, 0, 0), new DateTime(2026, 2, 3, 17, 0, 0), new DateTime(2026, 2, 3, 12, 0, 0), new DateTime(2026, 2, 3, 13, 0, 0), "AddBreak"),
+                new WorkDay("Wednesday", 3, true, new DateTime(2026, 2, 4, 8, 0, 0), new DateTime(2026, 2, 4, 17, 0, 0), new DateTime(2026, 2, 4, 12, 0, 0), new DateTime(2026, 2, 4, 13, 0, 0), "AddBreak"),
+                new WorkDay("Thursday", 4, true, new DateTime(2026, 2, 5, 8, 0, 0), new DateTime(2026, 2, 5, 17, 0, 0), new DateTime(2026, 2, 5, 12, 0, 0), new DateTime(2026, 2, 5, 13, 0, 0), "AddBreak"),
+                new WorkDay("Friday", 5, true, new DateTime(2026, 2, 6, 8, 0, 0), new DateTime(2026, 2, 6, 17, 0, 0), new DateTime(2026, 2, 6, 12, 0, 0), new DateTime(2026, 2, 6, 13, 0, 0), "RemoveBreak"),
+                new WorkDay("Saturday", 6, true, new DateTime(2026, 2, 7, 8, 0, 0), new DateTime(2026, 2, 7, 17, 0, 0), new DateTime(2026, 2, 7, 12, 0, 0), new DateTime(2026, 2, 7, 13, 0, 0), "AddBreak")
             };
 
             List<WorkDay> workDays4 = new List<WorkDay>
             {
-                new WorkDay("Sunday", 0, true, new DateTime(2020, 2, 01, 10, 0, 0), new DateTime(2020, 2, 01, 19, 0, 0), new DateTime(2020, 2, 01, 14, 0, 0), new DateTime(2020, 2, 01, 15, 0, 0), "AddBreak"),
-                new WorkDay("Monday", 1, false, new DateTime(2020, 2, 2, 10, 0, 0), new DateTime(2020, 2, 2, 19, 0, 0), new DateTime(2020, 2, 2, 14, 0, 0), new DateTime(2020, 2, 2, 15, 0, 0), "TimeOff"),
-                new WorkDay("Tuesday", 2, true, new DateTime(2020, 2, 3, 10, 0, 0), new DateTime(2020, 2, 3, 19, 0, 0), new DateTime(2020, 2, 3, 14, 0, 0), new DateTime(2020, 2, 3, 15, 0, 0), "AddBreak"),
-                new WorkDay("Wednesday", 3, true, new DateTime(2020, 2, 4, 10, 0, 0), new DateTime(2020, 2, 4, 19, 0, 0), new DateTime(2020, 2, 4, 14, 0, 0), new DateTime(2020, 2, 4, 15, 0, 0), "AddBreak"),
-                new WorkDay("Thursday", 4, true, new DateTime(2020, 2, 5, 10, 0, 0), new DateTime(2020, 2, 5, 19, 0, 0), new DateTime(2020, 2, 5, 14, 0, 0), new DateTime(2020, 2, 5, 15, 0, 0), "AddBreak"),
-                new WorkDay("Friday", 5, true, new DateTime(2020, 2, 6, 10, 0, 0), new DateTime(2020, 2, 6, 19, 0, 0), new DateTime(2020, 2, 6, 14, 0, 0), new DateTime(2020, 2, 6, 15, 0, 0), "RemoveBreak"),
-                new WorkDay("Saturday", 6, false, new DateTime(2020, 2, 7, 10, 0, 0), new DateTime(2020, 2, 7, 19, 0, 0), new DateTime(2020, 2, 7, 14, 0, 0), new DateTime(2020, 2, 7, 15, 0, 0), "TimeOff")
+                new WorkDay("Sunday", 0, true, new DateTime(2026, 2, 01, 10, 0, 0), new DateTime(2026, 2, 01, 19, 0, 0), new DateTime(2026, 2, 01, 14, 0, 0), new DateTime(2026, 2, 01, 15, 0, 0), "AddBreak"),
+                new WorkDay("Monday", 1, false, new DateTime(2026, 2, 2, 10, 0, 0), new DateTime(2026, 2, 2, 19, 0, 0), new DateTime(2026, 2, 2, 14, 0, 0), new DateTime(2026, 2, 2, 15, 0, 0), "TimeOff"),
+                new WorkDay("Tuesday", 2, true, new DateTime(2026, 2, 3, 10, 0, 0), new DateTime(2026, 2, 3, 19, 0, 0), new DateTime(2026, 2, 3, 14, 0, 0), new DateTime(2026, 2, 3, 15, 0, 0), "AddBreak"),
+                new WorkDay("Wednesday", 3, true, new DateTime(2026, 2, 4, 10, 0, 0), new DateTime(2026, 2, 4, 19, 0, 0), new DateTime(2026, 2, 4, 14, 0, 0), new DateTime(2026, 2, 4, 15, 0, 0), "AddBreak"),
+                new WorkDay("Thursday", 4, true, new DateTime(2026, 2, 5, 10, 0, 0), new DateTime(2026, 2, 5, 19, 0, 0), new DateTime(2026, 2, 5, 14, 0, 0), new DateTime(2026, 2, 5, 15, 0, 0), "AddBreak"),
+                new WorkDay("Friday", 5, true, new DateTime(2026, 2, 6, 10, 0, 0), new DateTime(2026, 2, 6, 19, 0, 0), new DateTime(2026, 2, 6, 14, 0, 0), new DateTime(2026, 2, 6, 15, 0, 0), "RemoveBreak"),
+                new WorkDay("Saturday", 6, false, new DateTime(2026, 2, 7, 10, 0, 0), new DateTime(2026, 2, 7, 19, 0, 0), new DateTime(2026, 2, 7, 14, 0, 0), new DateTime(2026, 2, 7, 15, 0, 0), "TimeOff")
             };
 
             List<WorkDay> workDays5 = new List<WorkDay>
             {
-                new WorkDay("Sunday", 0, false, new DateTime(2020, 2, 01, 10, 0, 0), new DateTime(2020, 2, 01, 19, 0, 0), new DateTime(2020, 2, 01, 14, 0, 0), new DateTime(2020, 2, 01, 15, 0, 0), "TimeOff"),
-                new WorkDay("Monday", 1, false, new DateTime(2020, 2, 2, 10, 0, 0), new DateTime(2020, 2, 2, 19, 0, 0), new DateTime(2020, 2, 2, 14, 0, 0), new DateTime(2020, 2, 2, 15, 0, 0), "TimeOff"),
-                new WorkDay("Tuesday", 2, true, new DateTime(2020, 2, 3, 10, 0, 0), new DateTime(2020, 2, 3, 19, 0, 0), new DateTime(2020, 2, 3, 14, 0, 0), new DateTime(2020, 2, 3, 15, 0, 0), "AddBreak"),
-                new WorkDay("Wednesday", 3, true, new DateTime(2020, 2, 4, 10, 0, 0), new DateTime(2020, 2, 4, 19, 0, 0), new DateTime(2020, 2, 4, 14, 0, 0), new DateTime(2020, 2, 4, 15, 0, 0), "AddBreak"),
-                new WorkDay("Thursday", 4, true, new DateTime(2020, 2, 5, 10, 0, 0), new DateTime(2020, 2, 5, 19, 0, 0), new DateTime(2020, 2, 5, 14, 0, 0), new DateTime(2020, 2, 5, 15, 0, 0), "AddBreak"),
-                new WorkDay("Friday", 5, true, new DateTime(2020, 2, 6, 10, 0, 0), new DateTime(2020, 2, 6, 19, 0, 0), new DateTime(2020, 2, 6, 14, 0, 0), new DateTime(2020, 2, 6, 15, 0, 0), "RemoveBreak"),
-                new WorkDay("Saturday", 6, true, new DateTime(2020, 2, 7, 10, 0, 0), new DateTime(2020, 2, 7, 19, 0, 0), new DateTime(2020, 2, 7, 14, 0, 0), new DateTime(2020, 2, 7, 15, 0, 0), "AddBreak")
+                new WorkDay("Sunday", 0, false, new DateTime(2026, 2, 01, 10, 0, 0), new DateTime(2026, 2, 01, 19, 0, 0), new DateTime(2026, 2, 01, 14, 0, 0), new DateTime(2026, 2, 01, 15, 0, 0), "TimeOff"),
+                new WorkDay("Monday", 1, false, new DateTime(2026, 2, 2, 10, 0, 0), new DateTime(2026, 2, 2, 19, 0, 0), new DateTime(2026, 2, 2, 14, 0, 0), new DateTime(2026, 2, 2, 15, 0, 0), "TimeOff"),
+                new WorkDay("Tuesday", 2, true, new DateTime(2026, 2, 3, 10, 0, 0), new DateTime(2026, 2, 3, 19, 0, 0), new DateTime(2026, 2, 3, 14, 0, 0), new DateTime(2026, 2, 3, 15, 0, 0), "AddBreak"),
+                new WorkDay("Wednesday", 3, true, new DateTime(2026, 2, 4, 10, 0, 0), new DateTime(2026, 2, 4, 19, 0, 0), new DateTime(2026, 2, 4, 14, 0, 0), new DateTime(2026, 2, 4, 15, 0, 0), "AddBreak"),
+                new WorkDay("Thursday", 4, true, new DateTime(2026, 2, 5, 10, 0, 0), new DateTime(2026, 2, 5, 19, 0, 0), new DateTime(2026, 2, 5, 14, 0, 0), new DateTime(2026, 2, 5, 15, 0, 0), "AddBreak"),
+                new WorkDay("Friday", 5, true, new DateTime(2026, 2, 6, 10, 0, 0), new DateTime(2026, 2, 6, 19, 0, 0), new DateTime(2026, 2, 6, 14, 0, 0), new DateTime(2026, 2, 6, 15, 0, 0), "RemoveBreak"),
+                new WorkDay("Saturday", 6, true, new DateTime(2026, 2, 7, 10, 0, 0), new DateTime(2026, 2, 7, 19, 0, 0), new DateTime(2026, 2, 7, 14, 0, 0), new DateTime(2026, 2, 7, 15, 0, 0), "AddBreak")
             };
 
             List<WorkDay> workDays6 = new List<WorkDay>
             {
-                new WorkDay("Sunday", 0, true, new DateTime(2020, 2, 01, 12, 0, 0), new DateTime(2020, 2, 01, 21, 0, 0), new DateTime(2020, 2, 01, 16, 0, 0), new DateTime(2020, 2, 01, 17, 0, 0), "AddBreak"),
-                new WorkDay("Monday", 1, false, new DateTime(2020, 2, 2, 12, 0, 0), new DateTime(2020, 2, 2, 21, 0, 0), new DateTime(2020, 2, 2, 16, 0, 0), new DateTime(2020, 2, 2, 17, 0, 0), "TimeOff"),
-                new WorkDay("Tuesday", 2, false, new DateTime(2020, 2, 3, 12, 0, 0), new DateTime(2020, 2, 3, 21, 0, 0), new DateTime(2020, 2, 3, 16, 0, 0), new DateTime(2020, 2, 3, 17, 0, 0), "TimeOff"),
-                new WorkDay("Wednesday", 3, true, new DateTime(2020, 2, 4, 12, 0, 0), new DateTime(2020, 2, 4, 21, 0, 0), new DateTime(2020, 2, 4, 16, 0, 0), new DateTime(2020, 2, 4, 17, 0, 0), "AddBreak"),
-                new WorkDay("Thursday", 4, true, new DateTime(2020, 2, 5, 12, 0, 0), new DateTime(2020, 2, 5, 21, 0, 0), new DateTime(2020, 2, 5, 16, 0, 0), new DateTime(2020, 2, 5, 17, 0, 0), "AddBreak"),
-                new WorkDay("Friday", 5, true, new DateTime(2020, 2, 6, 12, 0, 0), new DateTime(2020, 2, 6, 21, 0, 0), new DateTime(2020, 2, 6, 16, 0, 0), new DateTime(2020, 2, 6, 17, 0, 0), "RemoveBreak"),
-                new WorkDay("Saturday", 6, true, new DateTime(2020, 2, 7, 12, 0, 0), new DateTime(2020, 2, 7, 21, 0, 0), new DateTime(2020, 2, 7, 16, 0, 0), new DateTime(2020, 2, 7, 17, 0, 0), "AddBreak")
+                new WorkDay("Sunday", 0, true, new DateTime(2026, 2, 01, 12, 0, 0), new DateTime(2026, 2, 01, 21, 0, 0), new DateTime(2026, 2, 01, 16, 0, 0), new DateTime(2026, 2, 01, 17, 0, 0), "AddBreak"),
+                new WorkDay("Monday", 1, false, new DateTime(2026, 2, 2, 12, 0, 0), new DateTime(2026, 2, 2, 21, 0, 0), new DateTime(2026, 2, 2, 16, 0, 0), new DateTime(2026, 2, 2, 17, 0, 0), "TimeOff"),
+                new WorkDay("Tuesday", 2, false, new DateTime(2026, 2, 3, 12, 0, 0), new DateTime(2026, 2, 3, 21, 0, 0), new DateTime(2026, 2, 3, 16, 0, 0), new DateTime(2026, 2, 3, 17, 0, 0), "TimeOff"),
+                new WorkDay("Wednesday", 3, true, new DateTime(2026, 2, 4, 12, 0, 0), new DateTime(2026, 2, 4, 21, 0, 0), new DateTime(2026, 2, 4, 16, 0, 0), new DateTime(2026, 2, 4, 17, 0, 0), "AddBreak"),
+                new WorkDay("Thursday", 4, true, new DateTime(2026, 2, 5, 12, 0, 0), new DateTime(2026, 2, 5, 21, 0, 0), new DateTime(2026, 2, 5, 16, 0, 0), new DateTime(2026, 2, 5, 17, 0, 0), "AddBreak"),
+                new WorkDay("Friday", 5, true, new DateTime(2026, 2, 6, 12, 0, 0), new DateTime(2026, 2, 6, 21, 0, 0), new DateTime(2026, 2, 6, 16, 0, 0), new DateTime(2026, 2, 6, 17, 0, 0), "RemoveBreak"),
+                new WorkDay("Saturday", 6, true, new DateTime(2026, 2, 7, 12, 0, 0), new DateTime(2026, 2, 7, 21, 0, 0), new DateTime(2026, 2, 7, 16, 0, 0), new DateTime(2026, 2, 7, 17, 0, 0), "AddBreak")
             };
 
             List<Doctor> doctors = new List<Doctor>
@@ -315,9 +416,9 @@ namespace AppointmentPlanner.Models
         public DateTime? WorkStartHour { get; set; }
         public DateTime? WorkEndHour { get; set; }
         [Required(ErrorMessage = "Enter valid Hour")]
-        public DateTime? BreakStartHour { get; set; } = new DateTime(2020, 2, 01, 12, 0, 0);
+        public DateTime? BreakStartHour { get; set; } = new DateTime(2026, 2, 01, 12, 0, 0);
         [Required(ErrorMessage = "Enter valid Hour")]
-        public DateTime? BreakEndHour { get; set; } = new DateTime(2020, 2, 01, 13, 0, 0);
+        public DateTime? BreakEndHour { get; set; } = new DateTime(2026, 2, 01, 13, 0, 0);
         public string State { get; set; }
 
         public WorkDay() { }
@@ -346,24 +447,50 @@ namespace AppointmentPlanner.Models
         public string Treatment { get; set; }
         public int DepartmentId { get; set; }
         public int PatientId { get; set; }
+        private static readonly Random Rand = new();
+
+        private static DateTime GetRandomQueueDate()
+        {
+            int month = Rand.Next(1, 13);
+
+            int day = Rand.Next(
+                1,
+                DateTime.DaysInMonth(2026, month) + 1);
+
+            return new DateTime(
+                2026,
+                month,
+                day,
+                Rand.Next(8, 18),
+                0,
+                0);
+        }
+
 
         public List<WaitingList> GetWaitingList()
         {
 
             List<WaitingList> wait = new List<WaitingList>()
             {
-                new WaitingList {Id= 1, Name= "Laura", StartTime= new DateTime(2020, 2, 3, 8, 30, 0), EndTime= new DateTime(2020, 2, 3, 9, 30, 0), Disease= "Sudden loss of vision", DepartmentName= "GENERAL", Treatment= "CHECKUP", DepartmentId= 1, PatientId= 1},
-                new WaitingList { Id= 2,Name= "Milka", StartTime= new DateTime(2020, 2, 4, 8, 30, 0), EndTime= new DateTime(2020, 2, 4, 10, 30, 0), Disease= "Bone Fracture", DepartmentName= "ORTHOPEDICS", Treatment= "SURGERY", DepartmentId= 4, PatientId= 2 },
-                new WaitingList { Id= 3, Name= "Adams", StartTime= new DateTime(2020, 2, 4, 9, 30, 0), EndTime= new DateTime(2020, 2, 4, 10, 30, 0), Disease= "Skin Hives", DepartmentName= "DERMATOLOGY", Treatment= "CHECKUP", DepartmentId= 3, PatientId= 3 },
-                new WaitingList { Id= 4, Name= "Janet", StartTime= new DateTime(2020, 2, 3, 11, 0, 0), EndTime= new DateTime(2020, 2, 3, 12, 30, 0), Disease= "Frequent urination", DepartmentName= "DIABETALOGY", Treatment= "DIALOGIS", DepartmentId= 5, PatientId= 4 },
-                new WaitingList { Id= 5, Name= "Mercy", StartTime= new DateTime(2020, 2, 3, 11, 0, 0), EndTime= new DateTime(2020, 2, 3, 12, 30, 0), Disease= "Muscle weakness", DepartmentName= "NEUROLOGY", Treatment= "DIAGNOSIS", DepartmentId= 2, PatientId= 5 },
-                new WaitingList { Id= 6, Name= "Richa", StartTime= new DateTime(2020, 2, 3, 11, 0, 0), EndTime= new DateTime(2020, 2, 3, 12, 30, 0), Disease= "Shortness of breath", DepartmentName= "CARDIOLOGY", Treatment= "REGULAR CHECKUP", DepartmentId= 6, PatientId= 6 },
-                new WaitingList { Id= 7, Name= "Richa", StartTime= new DateTime(2020, 2, 3, 8, 30, 0), EndTime= new DateTime(2020, 2, 3, 9, 30, 0), Disease= "Sudden loss of vision", DepartmentName= "GENERAL", Treatment= "CHECKUP", DepartmentId= 1, PatientId= 6 },
-                new WaitingList { Id= 8, Name= "Mercy", StartTime= new DateTime(2020, 8, 4, 8, 30, 0), EndTime= new DateTime(2020, 8, 4, 10, 30, 0), Disease= "Bone Fracture", DepartmentName= "ORTHOPEDICS", Treatment= "SURGERY", DepartmentId= 4, PatientId= 5},
-                new WaitingList { Id= 9, Name= "Janet", StartTime= new DateTime(2020, 2, 4, 9, 30, 0), EndTime= new DateTime(2020, 2, 4, 10, 30, 0), Disease= "Skin Hives", DepartmentName= "DERMATOLOGY", Treatment= "CHECKUP", DepartmentId= 3, PatientId= 4 }
+                new WaitingList {Id= 1, Name= "Laura", StartTime= new DateTime(2026, 9, 3, 8, 30, 0), EndTime= new DateTime(2026, 9, 3, 9, 30, 0), Disease= "Sudden loss of vision", DepartmentName= "GENERAL", Treatment= "CHECKUP", DepartmentId= 1, PatientId= 1},
+                new WaitingList { Id= 2,Name= "Milka", StartTime= new DateTime(2026, 9, 4, 8, 30, 0), EndTime= new DateTime(2026, 9, 4, 10, 30, 0), Disease= "Bone Fracture", DepartmentName= "ORTHOPEDICS", Treatment= "SURGERY", DepartmentId= 4, PatientId= 2 },
+                new WaitingList { Id= 3, Name= "Adams", StartTime= new DateTime(2026, 9, 5, 9, 30, 0), EndTime= new DateTime(2026, 9, 5, 10, 30, 0), Disease= "Skin Hives", DepartmentName= "DERMATOLOGY", Treatment= "CHECKUP", DepartmentId= 3, PatientId= 3 },
+                new WaitingList { Id= 4, Name= "Janet", StartTime= new DateTime(2026, 9, 5, 11, 0, 0), EndTime= new DateTime(2026, 9, 5, 12, 30, 0), Disease= "Frequent urination", DepartmentName= "DIABETALOGY", Treatment= "DIALOGIS", DepartmentId= 5, PatientId= 4 },
+                new WaitingList { Id= 5, Name= "Mercy", StartTime= new DateTime(2026, 9, 6, 11, 0, 0), EndTime= new DateTime(2026, 9, 6, 12, 30, 0), Disease= "Muscle weakness", DepartmentName= "NEUROLOGY", Treatment= "DIAGNOSIS", DepartmentId= 2, PatientId= 5 },
+                new WaitingList { Id= 6, Name= "Richa", StartTime= new DateTime(2026, 9, 10, 11, 0, 0), EndTime= new DateTime(2026, 9, 10, 12, 30, 0), Disease= "Shortness of breath", DepartmentName= "CARDIOLOGY", Treatment= "REGULAR CHECKUP", DepartmentId= 6, PatientId= 6 },
+                new WaitingList { Id= 7, Name= "Richa", StartTime= new DateTime(2026, 9, 8, 8, 30, 0), EndTime= new DateTime(2026, 9, 8, 9, 30, 0), Disease= "Sudden loss of vision", DepartmentName= "GENERAL", Treatment= "CHECKUP", DepartmentId= 1, PatientId= 6 },
+                new WaitingList { Id= 8, Name= "Mercy", StartTime= new DateTime(2026, 9, 15, 8, 30, 0), EndTime= new DateTime(2026, 9, 15, 10, 30, 0), Disease= "Bone Fracture", DepartmentName= "ORTHOPEDICS", Treatment= "SURGERY", DepartmentId= 4, PatientId= 5},
+                new WaitingList { Id= 9, Name= "Janet", StartTime= new DateTime(2026, 9, 22, 9, 30, 0), EndTime= new DateTime(2026, 9, 22, 10, 30, 0), Disease= "Skin Hives", DepartmentName= "DERMATOLOGY", Treatment= "CHECKUP", DepartmentId= 3, PatientId= 4 }
 
             };
-            return wait;
+            foreach (var item in wait)
+                {
+                    var start = GetRandomQueueDate();
+
+                    item.StartTime = start;
+                    item.EndTime = start.AddMinutes(30);
+                }
+                            return wait;
 
         }
     }
@@ -577,10 +704,10 @@ namespace AppointmentPlanner.Models
         {
             List<Activity> data = new List<Activity>
             {
-                new Activity("Added New Doctor", "Dr.Johnson James, Cardiologist", "5 mins ago", "doctor", new DateTime(2020, 2, 1, 9, 0, 0)),
-                new Activity("Added New Appointment", "Laura for General Checkup on 7th March, 2020 @ 8.30 AM with Dr.Molli Cobb, Cardiologist", "5 mins ago", "appointment", new DateTime(2020, 2, 1, 11, 0, 0)),
-                new Activity("Added New Patient", "James Richard for Fever and cold", "5 mins ago", "patient", new DateTime(2020, 2, 1, 10, 0, 0)),
-                new Activity("Added New Appointment", "Joseph for consultation on 7th Feb, 2020 @ 11.10 AM with Dr.Molli Cobb", "5 mins ago", "appointment", new DateTime(2020, 2, 1, 11, 0, 0))
+                new Activity("Added New Doctor", "Dr.Johnson James, Cardiologist", "5 mins ago", "doctor", new DateTime(2026, 2, 1, 9, 0, 0)),
+                new Activity("Added New Appointment", "Laura for General Checkup on 7th March, 2020 @ 8.30 AM with Dr.Molli Cobb, Cardiologist", "5 mins ago", "appointment", new DateTime(2026, 2, 1, 11, 0, 0)),
+                new Activity("Added New Patient", "James Richard for Fever and cold", "5 mins ago", "patient", new DateTime(2026, 2, 1, 10, 0, 0)),
+                new Activity("Added New Appointment", "Joseph for consultation on 7th Feb, 2020 @ 11.10 AM with Dr.Molli Cobb", "5 mins ago", "appointment", new DateTime(2026, 2, 1, 11, 0, 0))
             };
             return data;
         }

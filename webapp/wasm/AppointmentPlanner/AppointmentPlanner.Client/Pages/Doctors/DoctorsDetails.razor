@@ -7,62 +7,244 @@
 @inject NavigationManager UriHelper
 @implements IDisposable;
 
-<link href="css/appoinment/doctordetails.css" rel="stylesheet" />
+<link href="css/appointment/doctordetails.css" rel="stylesheet" />
 <div class="doctor-details-container">
-    <header>
-        <div class="detail-header-title">
-            <span class="back-icon icon-previous" @onclick="@onBackIconClick"></span>
-            <div class="module-title">
-                <div class='title'>DOCTOR DETAILS</div>
-                <div class='underline'></div>
+   <header id="doctorHeader">
+
+        <div id="headerLeft">
+
+            <button id="backButton"
+                    type="button"
+                    aria-label="Go back"
+                    @onclick="onBackIconClick">
+
+                <span class="icon-previous"></span>
+
+            </button>
+
+            <div id="headerTitleContainer">
+
+                <h1 id="pageTitle">
+                    Doctor Details
+                </h1>
+
+                <div id="titleUnderline"></div>
+
             </div>
+
         </div>
-        <div class='doctor-detail'>
-            <SfButton Disabled="@((activeData != null) ? false : true)" CssClass="e-small delete-details" @onclick="@onDoctorDelete">Delete</SfButton>
-            <SfButton Disabled="@((activeData != null) ? false : true)" CssClass="e-small edit-details" @onclick="@onDoctorEdit">Edit</SfButton>
+
+        <div id="headerActions">
+
+            <SfButton Disabled="@(! (activeData != null))"
+                    CssClass="delete-details"
+                    aria-label="Delete Doctor"
+                    @onclick="onDoctorDelete">
+
+                Delete
+
+            </SfButton>
+
+            <SfButton Disabled="@(! (activeData != null))"
+                    CssClass="edit-details"
+                    aria-label="Edit Doctor Profile"
+                    @onclick="onDoctorEdit">
+
+                Edit
+
+            </SfButton>
+
         </div>
+
     </header>
-    @if (activeData != null) { 
-    <div class="active-doctor">
-        <div class="active-doctor-image">
-            <img class="value" src="css/appoinment/assets/images/@(activeData.Text).png" alt="doctor" />
-            <span class='availability @(activeData.Availability)'></span>
-        </div>
-        <div class="active-doctor-info">
-            <div class="basic-detail info-field-container">
-                <div class="name">Dr. @activeData.Name</div>
-                <div class="education">@(activeData.Education != null ? activeData.Education.ToUpper(): "")</div>
-                <div class="designation">@activeData.Designation</div>
-            </div>
-            <div class="speciality-detail info-field-container">
-                <div class="label-text">Specialization</div>
-                <div class="specialization">@getSpecializationText</div>
-            </div>
-            <div class="work-experience info-field-container">
-                <div class="label-text">Experience</div>
-                <div class="experience">@activeData.Experience</div>
-            </div>
-            <div class="work-availability info-field-container">
-                <div class="label-text">Availability</div>
-                <div class="available-days">@getAvailability</div>
-            </div>
-            <div class="contact-info info-field-container">
-                <div class="label-text">Mobile</div>
-                <div class="mobile">@activeData.Mobile</div>
-            </div>
-        </div>
-        <div class="work-days-container">
-            <div class="work-days-content">
-                <div class='work-day-item'>
+    @if (activeData != null) {
+        <main id="doctor-page">
+
+            <!-- HERO -->
+
+           
+            <SfCard ID="doctorHeroCard">
+
+                <CardContent>
+
+                    <section id="doctorHeroSection">
+
+                        <div id="doctorAvatarContainer">
+
+                            <img id="doctorAvatar"
+                                src="css/appointment/assets/images/@(activeData.Text).png"
+                                alt="Doctor profile name"/>
+
+                        </div>
+
+                        <div id="doctorInfo">
+
+                            <h1 id="doctorName">
+                                Dr. @activeData.Name
+                            </h1>
+
+                            <div id="doctorDepartment">
+                                @getSpecializationText
+                            </div>
+
+                            <div id="doctorEducation">
+                                @activeData.Education
+                            </div>
+
+                            <div id="doctorDesignation">
+                                @activeData.Designation
+                            </div>
+
+                        </div>
+
+                        <div id="doctorStatusArea">
+
+                            <span id="doctorStatus">
+                                @activeData.Availability
+                            </span>
+
+                        </div>
+
+                    </section>
+
+                </CardContent>
+
+            </SfCard>
+
+            <!-- KPI -->
+
+            <section id="kpiSection">
+
+                <SfCard ID="experienceCard">
+                    <CardContent>
+
+                        <div id="experienceValue">
+                            @activeData.Experience
+                        </div>
+
+                        <div id="experienceLabel">
+                            Experience
+                        </div>
+
+                    </CardContent>
+                </SfCard>
+
+                <SfCard ID="workingDaysCard">
+                    <CardContent>
+
+                        <div id="workingDaysValue">
+                            @WorkingDaysCount
+                        </div>
+
+                        <div id="workingDaysLabel">
+                            Working Days
+                        </div>
+
+                    </CardContent>
+                </SfCard>
+
+                <SfCard ID="contactCard">
+                    <CardContent>
+
+                        <div id="contactValue">
+                            @activeData.Mobile
+                        </div>
+
+                        <div id="contactLabel">
+                            Contact
+                        </div>
+
+                    </CardContent>
+                </SfCard>
+
+            </section>
+
+            <!-- DETAILS -->
+
+            <section id="detailsSection">
+
+                <SfCard ID="professionalCard">
+
+                    <CardContent>
+
+                        <h3>Professional Information</h3>
+
+                        <div class="detail-row">
+                            <label>Department</label>
+                            <span>@getSpecializationText</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <label>Designation</label>
+                            <span>@activeData.Designation</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <label>Experience</label>
+                            <span>@activeData.Experience</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <label>Education</label>
+                            <span>@activeData.Education</span>
+                        </div>
+
+                    </CardContent>
+
+                </SfCard>
+
+                <SfCard ID="contactInfoCard">
+
+                    <CardContent>
+
+                        <h3>Contact Information</h3>
+
+                        <div class="detail-row">
+                            <label>Mobile</label>
+                            <span>@activeData.Mobile</span>
+                        </div>
+
+                        <div class="detail-row">
+                            <label>Email</label>
+                            <span>@activeData.Email</span>
+                        </div>
+
+                    </CardContent>
+
+                </SfCard>
+
+            </section>
+
+            <!-- SCHEDULE -->
+
+            <SfCard ID="scheduleCard">
+
+                <CardContent>
+
+                    <h3 id="scheduleTitle">
+                        Weekly Schedule
+                    </h3>
+
                     @foreach (var data in activeData.WorkDays)
                     {
-                        <div class="day-name">@(data.Day.Substring(0, 1).ToUpper())@data.Day.Substring(1)</div>
-                        <div class="day-break-hours @(data.State)">@(getBreakDetails(data))</div>
+                        <div class="schedule-row">
+
+                            <span class="day-column">
+                                @(char.ToUpper(data.Day[0]) + data.Day.Substring(1))
+                            </span>
+
+                            <span class="time-column @data.State">
+                                @getBreakDetails(data)
+                            </span>
+
+                        </div>
                     }
-                </div>
-            </div>
-        </div>
-    </div>
+
+                </CardContent>
+
+            </SfCard>
+
+        </main>
     }
 </div>
 
@@ -148,6 +330,7 @@
     private Doctor activeData { get; set; }
     private string getSpecializationText { get; set; }
     private string getAvailability { get; set; }
+    private int WorkingDaysCount =>activeData?.AvailableDays?.Length ?? 0;
 
     protected override void OnInitialized()
     {
@@ -206,7 +389,7 @@
         }
         onBackIconClick(args);
     }
-    
+
     private void onDoctorEdit(Microsoft.AspNetCore.Components.Web.MouseEventArgs args)
     {
         editVisible = true;

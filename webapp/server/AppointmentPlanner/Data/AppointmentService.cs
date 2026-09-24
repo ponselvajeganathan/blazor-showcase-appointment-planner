@@ -11,7 +11,7 @@ namespace AppointmentPlanner.Data
         public AppointmentService()
         {
             this.Activities = new Activity().GetActivityData();
-            this.StartDate = new DateTime(2020, 2, 5, 0, 0, 0, 0);
+            this.StartDate = DateTime.Today;
             this.ActiveDoctors = new Doctor().GetDoctorsData().FirstOrDefault();
             this.ActivePatients = new Patient().GetPatientsData().FirstOrDefault();
             this.StartHours = new TextValueData().GetStartHours();
@@ -29,13 +29,13 @@ namespace AppointmentPlanner.Data
             this.DutyTimings = new TextIdData().DutyTimingsData();
             this.Experience = new TextIdData().ExperienceData();
             this.NavigationMenu = new NavigationMenu().GetNavigationMenuItems();
-            this.CalendarSettings = new CalendarSetting { BookingColor = "Doctors", Calendar = new AppointmentPlanner.Models.Calendar { Start = "08:00", End = "21:00" }, CurrentView = "Week", Interval = 60, FirstDayOfWeek = 0 };
+            this.CalendarSettings = new CalendarSetting { BookingColor = "Doctors", Calendar = new AppointmentPlanner.Models.Calendar { Start = "08:00", End = "21:00" }, CurrentView = "Day", Interval = 60, FirstDayOfWeek = 0 };
         }
         public DateTime StartDate { get; set; }
         public Doctor ActiveDoctors { get; set; }
 
         public Patient ActivePatients { get; set; }
-        public List<TextValueData> StartHours { get; set; } 
+        public List<TextValueData> StartHours { get; set; }
         public List<TextValueData> EndHours { get; set; }
         public List<TextValueData> Views { get; set; }
         public List<TextValueData> ColorCategory { get; set; }
@@ -55,7 +55,7 @@ namespace AppointmentPlanner.Data
         public bool ShowDeleteMsg { get; set; }
 
         public DateTime GetWeekFirstDate(DateTime date)
-        { 
+        {
             return date.AddDays(DayOfWeek.Monday - date.DayOfWeek);
         }
 
@@ -101,7 +101,7 @@ namespace AppointmentPlanner.Data
             {
                 var result = workDays.Where(item => item.Enable.Equals(true)).Select(item => item.Day.Substring(0, 3).ToUpper());
                 return string.Join(",", result).ToString();
-                
+
             }
             return string.Empty;
         }
@@ -135,6 +135,6 @@ namespace AppointmentPlanner.Data
             return chartPoints;
         }
 
-        
-    } 
+
+    }
 }

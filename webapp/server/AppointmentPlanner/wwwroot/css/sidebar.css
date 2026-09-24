@@ -1,6 +1,6 @@
-﻿#plannerSiderBar .info {
-    margin-top: 60px;
-    padding-bottom: 10px;
+#plannerSiderBar .info {
+    
+    padding-bottom: 15px;
 }
     #plannerSiderBar .info .image {
         border: 2px solid #fff;
@@ -15,6 +15,9 @@
     display: none;
 }
 
+.e-sidebar.e-left {
+    background: #0a4d4a !important;
+}
 
         #plannerSiderBar .info .image img {
             height: 80px;
@@ -29,7 +32,7 @@
     #plannerSiderBar .info .name {
         font-weight: bold;
         font-size: 16px;
-        color: #333;
+        color: #fff;
         letter-spacing: 0.48px;
         margin-bottom: 0;
     }
@@ -41,7 +44,7 @@
 
     #plannerSiderBar .info .user-type {
         font-size: 11px;
-        color: #808080;
+        color: #fff;
         letter-spacing: 0.33px;
         margin-top: 5px;
     }
@@ -59,8 +62,9 @@
     border-radius: 3px;
     display: flex;
     align-items: center;
-    color: #666;
+    color: #fff;
     cursor: pointer;
+
 }
 
     #plannerSiderBar .sidebar-item .text {
@@ -71,7 +75,7 @@
         text-align: left;
     }
     #plannerSiderBar .sidebar-item.active, #plannerSiderBar .sidebar-item.active:hover {
-        background-color: #7575ff;
+        background-color: #0a8a8a;
         color: #fff;
     }
 
@@ -81,9 +85,9 @@
   margin-top: 9px;
 }
 
-.planner-header .e-appbar.custom-appbar {
-    background: #7575ff !important;
-    height: 50px;
+.planner-header .e-appbar.custom-appbar  {
+    background: #0a4d4a !important;
+    height: 56px;
     display: flex;
 }
 
@@ -92,12 +96,12 @@
         display: inline-flex;
     }
 
-        .planner-header .name-cantainer .clinic-image {
+         .clinic-image {
             font-size: 50px;
             color: #fff;
         }
 
-    .planner-header .clinic-name, .planner-header .logout-name {
+     .clinic-name,  .logout-name {
         margin: auto 0;
         color: white;
         cursor: default;
@@ -108,9 +112,11 @@
         flex: auto;
         position: relative;
     }
-	.planner-header .clinic-name.appointment-title {
-        font-size: 16px;
-        font-weight: 400;
+	.clinic-name.appointment-title {
+        font-size: 18px;
+        font-weight: 700;
+        color:#fff;
+        padding-left: 10px; 
      }
 
         .planner-header div.side-bar-opener .open-icon {
@@ -135,18 +141,18 @@
             display: flex;
         }
 
-        .planner-header .logout-container .logout-icon-container {
+        .logout-container .logout-icon-container {
             opacity: 1;
             flex: auto;
             padding: 0 7px;
             align-self: center;
         }
 
-        .planner-header .logout-container .logout-name {
+        .logout-container .logout-name {
             display: none;
         }
 
-        .planner-header .logout-container .logout-image {
+         .logout-container .logout-image {
             color: #fff;
             font-size: 25px;
             cursor: pointer;
@@ -201,7 +207,7 @@ header .module-title .title {
 }
 
 header .module-title .underline {
-    background: #7575ff;
+    background: #0a8a8a;
     border-radius: 5px;
     width: 52px;
     height: 4px;
@@ -216,11 +222,17 @@ header .module-title .underline {
     top: auto;
 }
 
+/* Normal document flow — a fixed+overflow:scroll shell breaks the
+   Syncfusion grid's virtual-scroll measurement (content floats over the page) */
 .main-content {
-    height: calc(100vh - 20%);
+    /* width: 100%;
+    position: static !important;
+    overflow: visible !important;
+    height: auto !important; */
     width: 100%;
     position: fixed;
-    overflow: scroll;
+    overflow-y: scroll;
+    height: calc(100vh - 10%);
 }
 
 @media (max-width: 850px) {
@@ -244,7 +256,7 @@ header .module-title .underline {
         padding-right: 0px;
     }
 
-    
+
 
         .col-lg-3.col-md-3.col-sm-3.treeview-container-wrapper .title-container {
             margin-top: 20px;
@@ -326,20 +338,21 @@ header .module-title .underline {
         padding-left: 25.6px;
     }
 }
- 
 
-/*font family*/
-
-@font-face {
+ @font-face {
     font-family: 'icons';
-    src: url(assets/fonts/icomoon.ttf?gcjn6a) format('truetype'), url(assets/fonts/icomoon.woff?gcjn6a) format('woff'), url(assets/fonts/icomoon.svg?gcjn6a#sbicons) format('svg');
+    src:
+        url('/css/appointment/assets/fonts/icomoon.woff') format('woff'),
+        url('/css/appointment/assets/fonts/icomoon.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
-@font-face {
+ @font-face {
     font-family: 'sb-icons';
-    src: url(assets/fonts/icons.ttf?gcjn6a) format('truetype'), url(assets/fonts/icons.woff?gcjn6a) format('woff'), url(assets/fonts/icons.svg?gcjn6a#sbicons) format('svg');
+    src:
+        url('/css/appointment/assets/fonts/icons.woff') format('woff'),
+        url('/css/appointment/assets/fonts/icons.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -368,9 +381,18 @@ header .module-title .underline {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    font-family: "icons" !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    display: inline-block;
+}
 [class^="sfimage-"], [class*=" sfimage-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
+
     font-family: 'sb-icons' !important;
     font-style: normal;
     font-size: 20px;
@@ -424,6 +446,11 @@ header .module-title .underline {
 
 .icon-reorder:before {
     content: "\e90b";
+}
+.item-image {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
 }
 
 
